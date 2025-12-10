@@ -8,7 +8,7 @@ const apiId = parseInt(process.env.API_ID);
 const apiHash = process.env.API_HASH;
 const phoneNumber = process.env.PHONE_NUMBER;
 
-const sessionFile = "./session.txt";
+const sessionFile = "./assets/session.txt";
 let stringSession = "";
 
 // Load existing session if available

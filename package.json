@@ -4,6 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "filter:groups": "node filterGroups.js",
+    "filter:inactive": "node filterInactive.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
