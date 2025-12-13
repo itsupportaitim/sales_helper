@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx mcp-gdrive:*)",
+      "Bash(npx -y @anthropic-ai/mcp-google-sheets)",
+      "Bash(npx -y @piotr-agier/google-drive-mcp)",
+      "Bash(copy:*)",
+      "mcp__gdrive__getGoogleSheetContent",
+      "Bash(npm install:*)",
+      "Bash(dir \"%USERPROFILE%\\.gdrive-mcp\")"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "google-sheets"
+  ]
+}

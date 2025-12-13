@@ -1,0 +1,23 @@
+{
+  "name": "sales",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "filter:groups": "node filterGroups.js",
+    "filter:inactive": "node filterInactive.js",
+    "parse:leads": "node parseLeads.js",
+    "generate:excel": "node generateExcel.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
+    "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
+    "telegram": "^2.26.22"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gdrive": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@piotr-agier/google-drive-mcp"],
+      "env": {
+        "GOOGLE_DRIVE_OAUTH_CREDENTIALS": "C:\\Users\\Admin User 9\\projects\\SALES\\outreachBot\\gcp-oauth.keys.json"
+      }
+    }
+  }
+}
