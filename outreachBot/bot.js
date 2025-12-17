@@ -69,6 +69,7 @@ class LeadBot {
                     `Statistics:\n\n` +
                     `Total leads: ${stats.total}\n` +
                     `Completed: ${stats.completed}\n` +
+                    `In Progress: ${stats.inProgress}\n` +
                     `Pending: ${stats.pending}\n\n` +
                     `Successful: ${stats.successful}\n` +
                     `Rejected: ${stats.rejected}\n` +
@@ -229,7 +230,11 @@ class LeadBot {
 
     async sendNextLead(ctx) {
         try {
-            const lead = await googleSheets.getNextLead();
+            const userId = ctx.from.id;
+            const username = ctx.from.username || ctx.from.first_name || 'Unknown';
+            const assignedTo = `${userId} @${username}`;
+
+            const lead = await googleSheets.getNextLead(assignedTo);
 
             if (!lead) {
                 return ctx.reply('No more leads to process! All leads have been completed.');

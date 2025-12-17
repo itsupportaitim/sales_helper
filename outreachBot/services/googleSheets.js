@@ -80,9 +80,10 @@ class GoogleSheetsService {
 
         for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
-            const result = row[5] || ''; // Result column (F)
+            const result = (row[5] || '').toLowerCase().trim(); // Result column (F)
 
-            if (!result.trim()) {
+            // Skip if has result or is in progress
+            if (!result) {
                 leads.push({
                     rowIndex: i + 1, // 1-indexed for Sheets API
                     id: row[0] || '',
@@ -99,9 +100,24 @@ class GoogleSheetsService {
         return leads;
     }
 
-    async getNextLead() {
+    async getNextLead(assignedTo) {
         const leads = await this.getLeadsWithEmptyResult();
-        return leads.length > 0 ? leads[0] : null;
+        if (leads.length === 0) return null;
+
+        const lead = leads[0];
+
+        // Immediately mark as "In Progress" to prevent duplicate assignments
+        await this.sheets.spreadsheets.values.update({
+            spreadsheetId: this.spreadsheetId,
+            range: `F${lead.rowIndex}:G${lead.rowIndex}`,
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: [['In Progress', assignedTo]],
+            },
+        });
+
+        console.log(`Assigned row ${lead.rowIndex} to ${assignedTo}`);
+        return lead;
     }
 
     async updateLeadResult(rowIndex, result, notes, completedBy) {
@@ -146,18 +162,21 @@ class GoogleSheetsService {
         });
 
         const rows = response.data.values || [];
-        if (rows.length <= 1) return { total: 0, completed: 0, pending: 0, successful: 0, rejected: 0, ignored: 0 };
+        if (rows.length <= 1) return { total: 0, completed: 0, pending: 0, inProgress: 0, successful: 0, rejected: 0, ignored: 0 };
 
         let total = rows.length - 1;
         let successful = 0;
         let rejected = 0;
         let ignored = 0;
+        let inProgress = 0;
         let pending = 0;
 
         for (let i = 1; i < rows.length; i++) {
             const result = (rows[i][5] || '').toLowerCase().trim();
             if (!result) {
                 pending++;
+            } else if (result === 'in progress') {
+                inProgress++;
             } else if (result === 'successful' || result === 'success') {
                 successful++;
             } else if (result === 'rejected' || result === 'rejection') {
@@ -169,8 +188,9 @@ class GoogleSheetsService {
 
         return {
             total,
-            completed: total - pending,
+            completed: total - pending - inProgress,
             pending,
+            inProgress,
             successful,
             rejected,
             ignored,
