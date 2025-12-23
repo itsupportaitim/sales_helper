@@ -7,7 +7,10 @@
       "Bash(copy:*)",
       "mcp__gdrive__getGoogleSheetContent",
       "Bash(npm install:*)",
-      "Bash(dir \"%USERPROFILE%\\.gdrive-mcp\")"
+      "Bash(dir \"%USERPROFILE%\\.gdrive-mcp\")",
+      "Bash(cd:*)",
+      "Bash(dir:*)",
+      "Bash(tree:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
